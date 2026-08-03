@@ -9,19 +9,41 @@ class BasicModel(Model):
         # you have to initialize self.model to a keras model
         self.model = Sequential([
             layers.Input(shape=input_shape),
-            layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
-            layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+
+            layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+            layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+
             layers.MaxPooling2D(pool_size=(2, 2)),
+
+            layers.BatchNormalization(),
+            
+            layers.Dropout(0.3),
+
+            layers.Conv2D(40, kernel_size=(3, 3), activation="relu"),
             layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
-            layers.Conv2D(128, kernel_size=(3, 3), activation="relu"),
-            layers.GlobalAveragePooling2D(),
-            layers.Dropout(0.5),
+
+            # layers.Dense(categories_count, activation="softmax"),
+
+            layers.MaxPooling2D(pool_size=(2, 2)),
+
+            layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+            layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+
+            # layers.Dense(categories_count, activation="softmax"),
+
+            layers.MaxPooling2D(pool_size=(2, 2)),
+
+            layers.Dropout(0.3),
+
+            layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+            layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+
+            # layers.Dense(categories_count, activation="softmax"),
+            # layers.GlobalAveragePooling2D(),
+
+            layers.Flatten(),
+
             layers.Dense(categories_count, activation="softmax"),
-            # layers.Input(shape=input_shape),
-            # layers.Flatten(),
-            # layers.Dense(categories_count, activation="relu"),
-            # layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
-            # layers.MaxPooling2D(pool_size=(3, 3)),
         ])
     
     def _compile_model(self):
