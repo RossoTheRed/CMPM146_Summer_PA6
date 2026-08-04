@@ -107,19 +107,19 @@ class UserWebcamPlayer:
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
+        from tensorflow.python.ops.numpy_ops import np_config
+        np_config.enable_numpy_behavior()
         model = models.load_model('''results/basic_model_15_epochs_timestamp_1785714331.keras''')
+        
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
         img = cv2.resize(img, (150, 150))
         img = np.expand_dims(img,0)
-        result = list(model(img))
-        best = max(result[0])
-        # print(f"Models: {model}")
-        # print(f"img: {img}")
-        print(f"Of results {result[0]}, max is {best}")
-        
-        raise KeyboardInterrupt
-        return 1
-        pass
+
+        result = model(img).tolist()
+        result = result[0]
+        best = max(result)
+
+        return result.index(best)
     
     def get_move(self, board_state):
         row, col = None, None
